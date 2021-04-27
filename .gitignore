@@ -1,0 +1,18 @@
+################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+.subversion/
+.svn/
+packages/
+.vs/
+bin/
+obj/
+node_modules/
+/package-lock.json
+*DotSettings.user
+*csproj.user
+*.pubxml
+*.pubxml.user
+build/
+.viminfo
+.idea/

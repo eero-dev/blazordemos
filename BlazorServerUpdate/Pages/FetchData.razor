@@ -1,0 +1,55 @@
+﻿@page "/"
+
+@using BlazorServerUpdate.Data
+@inject WeatherForecastService ForecastService
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private WeatherForecast[] forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+
+        //Bind to service's event
+        ForecastService.OnDataChange += new Action(async () => await RefreshData());
+    }
+
+    protected async Task RefreshData()
+    {
+
+        //Naively get data again
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+
+        //update UI
+        await InvokeAsync(StateHasChanged);
+    }
+}
