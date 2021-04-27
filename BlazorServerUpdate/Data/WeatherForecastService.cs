@@ -50,7 +50,7 @@ namespace BlazorServerUpdate.Data
                 if (1 == 1) // Would be custom logic to determine if something has been updated.. 
                 {
                     Summaries.Add(Guid.NewGuid().ToString("n").Substring(0, 8));
-                    NotifyDataChanged();
+                    NotifyDataChanged(); // Trigger event -> 'data has changed'
                 }
 
                 DataFetcher.Change(CheckInterval, Timeout.Infinite); // Trigger timer again
