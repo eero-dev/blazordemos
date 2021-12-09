@@ -1,0 +1,32 @@
+name: Release demo projects
+
+on:
+  release:
+    types: [released]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # Setup NET 6
+      - uses: actions/checkout@v2
+      - name: Setup .NET 6
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+
+      # Publish BlazorServerUpdate
+      - name: Publish BlazorServerUpdate
+        run: dotnet publish 'BlazorServerUpdate/BlazorServerUpdate.csproj' -c Release --self-contained false -o ${{ github.workspace }}/blazorserverupdate
+
+      # Zip BlazorServerUpdate artifact
+      - name: Publish BlazorServerUpdate
+        run: zip blazorserverupdate.zip ${{ github.workspace }}/blazorserverupdate/
+
+      # Release BlazorServerUpdate
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: blazorserverupdate.zip
