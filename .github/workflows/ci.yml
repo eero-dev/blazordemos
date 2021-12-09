@@ -1,0 +1,29 @@
+name: Build demo projects
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # Setup NET 6
+      - uses: actions/checkout@v2
+      - name: Setup .NET 6
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+
+      # Publish BlazorServerUpdate
+      - name: Publish BlazorServerUpdate
+        run: dotnet publish 'BlazorServerUpdate/BlazorServerUpdate.csproj' -c Release --self-contained false -o ${{ github.workspace }}/blazorserverupdate
+
+      # Upload Publish Artifact for BlazorServerUpdate
+      - name: Upload BlazorServerUpdate Publish Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: blazorserverupdate
+          path: ${{ github.workspace }}/blazorserverupdate/          
