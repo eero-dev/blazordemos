@@ -1,7 +1,13 @@
 ﻿@page "/"
 
+<PageTitle>Weather forecast</PageTitle>
+
 @using BlazorServerUpdate.Data
 @inject WeatherForecastService ForecastService
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates updating live data from a server to browser.</p>
 
 @if (forecasts == null)
 {
@@ -33,7 +39,7 @@ else
 }
 
 @code {
-    private WeatherForecast[] forecasts;
+    private WeatherForecast[]? forecasts;
 
     protected override async Task OnInitializedAsync()
     {
