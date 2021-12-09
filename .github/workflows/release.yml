@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      # Setup NET 6
+      # Setup .NET 6
       - uses: actions/checkout@v2
       - name: Setup .NET 6
         uses: actions/setup-dotnet@v1
@@ -18,15 +18,15 @@ jobs:
 
       # Publish BlazorServerUpdate
       - name: Publish BlazorServerUpdate
-        run: dotnet publish 'BlazorServerUpdate/BlazorServerUpdate.csproj' -c Release --self-contained false -o ${{ github.workspace }}/blazorserverupdate
+        run: dotnet publish 'BlazorServerUpdate/BlazorServerUpdate.csproj' -c Release --self-contained false -o ${{ github.workspace }}//blazorserverupdate/publish
 
-      # Zip BlazorServerUpdate artifact
-      - name: Publish BlazorServerUpdate
-        run: zip blazorserverupdate.zip ${{ github.workspace }}/blazorserverupdate/
+      # Compress BlazorServerUpdate artifact
+      - name: Compress BlazorServerUpdate artifact
+        run: 7z a blazorserverupdate.7z ${{ github.workspace }}//blazorserverupdate/publish/*
 
       # Release BlazorServerUpdate
-      - name: Release
+      - name: Release BlazorServerUpdate
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: blazorserverupdate.zip
+          files: blazorserverupdate.7z
